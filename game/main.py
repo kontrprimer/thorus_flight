@@ -1,22 +1,41 @@
 import pygame
 
+from game.player.player import Player
+from game.framework import Vector
+from game.controls import KEY_DIRECTIONS
+
+SCREEN = Vector([1920, 1080])
+WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+
 
 def launch():
     pygame.init()
-    screen = pygame.display.set_mode((800, 600))
-
-    r = pygame.Rect(350, 250, 100, 100)
-    WHITE = (255, 255, 255)
+    screen = pygame.display.set_mode(list(SCREEN))
+    clock = pygame.time.Clock()
+    player = Player(Vector([100, 100]))
 
     run = True
     while run:
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
                 run = False
-        pygame.draw.rect(screen, WHITE, r)
+        keys = pygame.key.get_pressed()
+        acceleration = Vector([0, 0])
+        for key, step in KEY_DIRECTIONS.items():
+            if keys[key]:
+                acceleration += step
+        acceleration = acceleration.limit(1)
+        player.accelerate(acceleration)
+        player.move(SCREEN)
+        screen.fill(BLACK)
+        pygame.draw.rect(screen, WHITE, player.draw())
         pygame.display.flip()
 
     pygame.quit()
+
+    # Cap the frame rate
+    clock.tick(60)
 
 
 if __name__ == "__main__":

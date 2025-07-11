@@ -1,24 +1,22 @@
-class Vector:
-    def __init__(self, coordinates):
-        self.__coordinates = list(coordinates)
+import pygame
 
-    def __len__(self):
-        return len(self.__coordinates)
+from game.framework import Vector
 
-    def __eq__(self, other):
-        return self.__coordinates == other.__coordinates
 
-    def __repr__(self):
-        return str(self.__coordinates)
+class Player:
+    def __init__(self, position: Vector):
+        self.pos = position
+        self.speed = Vector([0.51, 0.37])
+        self.max_speed = 1
 
-    def __add__(self, other):
-        return Vector([i + j for i, j in zip(self.__coordinates, other.__coordinates)])
+    def move(self, clip: Vector):
+        self.pos = (self.pos + self.speed) % clip
 
-    @property
-    def length(self):
-        return sum(i**2 for i in self.__coordinates) ** 0.5
+    def accelerate(self, direction: Vector):
+        self.speed += direction * 0.0008
+        self.speed = self.speed.limit(self.max_speed)
 
-    def norm(self, limit):
-        length = self.length
-        if length > 5:
-            self.__coordinates = [x * (limit / length) for x in self.__coordinates]
+    def draw(self):
+        diagonal = Vector([40, 40])
+        left_up = self.pos - diagonal / 2
+        return pygame.Rect(*left_up, *diagonal)
