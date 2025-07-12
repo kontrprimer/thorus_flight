@@ -44,9 +44,10 @@ class PlayerTrail:
         self.size = max(0, self.size - self.decay_speed)
 
     def draw(self, screen):
+        intensity = self.size / self.original_size
         pygame.draw.circle(
             screen,
-            (255, 100 + 155 * self.size / self.original_size, 255),
+            (180 + 75 * intensity, 100 + 155 * intensity, 255),
             list(self.pos),
             self.size,
         )
