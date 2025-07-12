@@ -6,20 +6,23 @@ from game.units.trail import UnitTrail
 
 
 class Enemy:
-    def __init__(self, position: Vector2D, target: Player):
+    def __init__(self, position: Vector2D, target: Player, screen_size: Vector2D):
         self.pos = position
         self.target = target
         self.speed = Vector2D(0.1, 0.1)
         self.max_speed = 6
+        self.screen_size = screen_size
+        self.margin = Vector2D(70, 70)
+        self.space_size = screen_size + self.margin * 2
         self.__trails: list[UnitTrail] = []
         self.__last_attack_time = 0.0
 
-    def update(self, clip: Vector2D):
+    def update(self):
         for trail in self.__trails:
             trail.update()
         self.__trails = [trail for trail in self.__trails if trail.exists]
         self.__trails.append(UnitTrail(self.pos, size=12, decay_speed=0.2))
-        self.pos = (self.pos + self.speed) % clip
+        self.pos = (self.pos + self.margin + self.speed) % self.space_size - self.margin
 
     def accelerate(self):
         direction = self.target.pos - self.pos

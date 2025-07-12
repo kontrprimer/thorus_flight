@@ -11,6 +11,8 @@ class Player:
         self.max_hp = 100.0
         self.current_hp = 100.0
         self.screen_size = screen_size
+        self.margin = Vector2D(70, 70)
+        self.space_size = screen_size + self.margin * 2
         self.__trails: list[UnitTrail] = []
 
     def update(self):
@@ -18,7 +20,7 @@ class Player:
             trail.update()
         self.__trails = [trail for trail in self.__trails if trail.exists]
         self.__trails.append(UnitTrail(self.pos, size=12, decay_speed=0.2))
-        self.pos = (self.pos + self.speed) % self.screen_size
+        self.pos = (self.pos + self.margin + self.speed) % self.space_size - self.margin
 
     def get_damage(self, damage: float):
         self.current_hp = max(self.current_hp - damage, 0)

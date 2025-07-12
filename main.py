@@ -16,8 +16,8 @@ def launch():
     # Cap the frame rate
     player = Player(SCREEN * 0.5, SCREEN)
     enemies = [
-        Enemy(SCREEN * 0.2, target=player),
-        Enemy(SCREEN * 0.8, target=player),
+        Enemy(Vector2D(-70, -70), target=player, screen_size=SCREEN),
+        Enemy(SCREEN + Vector2D(60, 60), target=player, screen_size=SCREEN),
     ]
     frame_start = time.time()
     run = True
@@ -53,7 +53,7 @@ def draw_screen(enemies, player, screen):
 def update_units(enemies, player):
     player.update()
     for enemy in enemies:
-        enemy.update(SCREEN)
+        enemy.update()
         enemy.try_attack()
 
 
