@@ -26,7 +26,7 @@ class Player:
             trail.draw(screen)
         draw_svg(
             screen,
-            svg_path="ship_2_a.svg",  # Replace with your SVG file path
+            svg_path="data/ship_2_a.svg",  # Replace with your SVG file path
             pos=self.pos,
             scale_k=0.15,
             rotation_deg=self.speed.angle,  # Rotation angle in degrees
@@ -37,13 +37,19 @@ class PlayerTrail:
     def __init__(self, pos, size, decay_speed):
         self.pos = pos
         self.size = size
+        self.original_size = size
         self.decay_speed = decay_speed
 
     def update(self):
         self.size = max(0, self.size - self.decay_speed)
 
     def draw(self, screen):
-        pygame.draw.circle(screen, (255, 255, 255), list(self.pos), self.size)
+        pygame.draw.circle(
+            screen,
+            (255, 100 + 155 * self.size / self.original_size, 255),
+            list(self.pos),
+            self.size,
+        )
 
     @property
     def exists(self):
