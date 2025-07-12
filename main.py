@@ -12,8 +12,11 @@ def launch():
     screen = pygame.display.set_mode(list(SCREEN))
     clock = pygame.time.Clock()
     # Cap the frame rate
-    player = Player(Vector2D(100, 100), SCREEN)
-    enemy = Enemy(Vector2D(500, 500), target=player)
+    player = Player(SCREEN * 0.5, SCREEN)
+    enemies = [
+        Enemy(SCREEN * 0.2, target=player),
+        Enemy(SCREEN * 0.8, target=player),
+    ]
 
     run = True
     while run:
@@ -27,12 +30,15 @@ def launch():
                 acceleration += step
         acceleration = acceleration.limit(1)
         player.accelerate(acceleration)
-        enemy.accelerate()
+        for enemy in enemies:
+            enemy.accelerate()
         player.update()
-        enemy.update(SCREEN)
-        enemy.try_attack()
+        for enemy in enemies:
+            enemy.update(SCREEN)
+            enemy.try_attack()
         screen.fill(BLACK)
-        enemy.draw(screen)
+        for enemy in enemies:
+            enemy.draw(screen)
         player.draw(screen)
         pygame.display.flip()
         clock.tick(165)

@@ -6,7 +6,7 @@ from game.framework import Vector2D, draw_svg
 class Player:
     def __init__(self, position: Vector2D, screen_size: Vector2D):
         self.pos = position
-        self.speed = Vector2D(0.1, 5.1)
+        self.speed = Vector2D(0.0, 0.0)
         self.max_speed = 50
         self.max_hp = 100.0
         self.current_hp = 100.0
