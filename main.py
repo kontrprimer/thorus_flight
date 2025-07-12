@@ -1,5 +1,5 @@
 import pygame
-from game.player.player import Player, Enemy, draw_hp_bar
+from game.player.player import Player, Enemy
 from game.framework import Vector2D
 from game.controls import KEY_DIRECTIONS
 
@@ -12,7 +12,7 @@ def launch():
     screen = pygame.display.set_mode(list(SCREEN))
     clock = pygame.time.Clock()
     # Cap the frame rate
-    player = Player(Vector2D(100, 100))
+    player = Player(Vector2D(100, 100), SCREEN)
     enemy = Enemy(Vector2D(500, 500), target=player)
 
     run = True
@@ -28,12 +28,11 @@ def launch():
         acceleration = acceleration.limit(1)
         player.accelerate(acceleration)
         enemy.accelerate()
-        player.update(SCREEN)
+        player.update()
         enemy.update(SCREEN)
         screen.fill(BLACK)
         enemy.draw(screen)
         player.draw(screen)
-        draw_hp_bar(screen, max_hp=40, current_hp=30, screen_size=SCREEN)
         pygame.display.flip()
         clock.tick(165)
 
