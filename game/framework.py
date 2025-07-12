@@ -62,16 +62,10 @@ def load_svg_as_surface(svg_path, scale=1.0):
 
 
 def draw_svg(screen, svg_path, pos: Vector2D, scale_k, rotation_deg):
-    # Load and scale SVG
     svg_surf = load_svg_as_surface(svg_path, scale=scale_k)
 
-    # Rotate the surface
-    rotated_surf = pygame.transform.rotate(
-        svg_surf, -rotation_deg
-    )  # Negative to rotate clockwise
+    # Smooth anti-aliased rotation
+    rotated_surf = pygame.transform.rotozoom(svg_surf, -rotation_deg, 1.0)
 
-    # Get new rect and center it at (x, y)
     rect = rotated_surf.get_rect(center=list(pos))
-
-    # Draw to the screen
     screen.blit(rotated_surf, rect)
