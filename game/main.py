@@ -29,7 +29,7 @@ def launch():
         player.accelerate(acceleration)
         player.move(SCREEN)
         screen.fill(BLACK)
-        pygame.draw.rect(screen, WHITE, player.draw())
+        player.draw(screen)
         pygame.display.flip()
 
     pygame.quit()
