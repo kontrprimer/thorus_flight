@@ -1,15 +1,24 @@
 import pygame.draw
+from .unit_base import Unit
+from game.framework import Vector2D
 
 
-class UnitTrail:
-    def __init__(self, pos, size, decay_speed):
-        self.pos = pos
+class UnitTrail(Unit):
+    def __init__(
+        self,
+        pos: Vector2D,
+        screen_size: Vector2D,
+        size: float,
+        decay_speed: float,
+    ):
+        super().__init__(pos, screen_size)
         self.size = size
         self.original_size = size
         self.decay_speed = decay_speed
 
     def update(self):
-        self.size = max(0, self.size - self.decay_speed)
+        super().update()
+        self.size = max(0.0, self.size - self.decay_speed)
 
     def draw(self, screen):
         intensity = self.size / self.original_size

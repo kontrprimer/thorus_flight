@@ -1,37 +1,14 @@
 import pygame.draw
 from game.framework import Vector2D, draw_svg
-from game.units.trail import UnitTrail
+from .character import Character
 
 
-class Player:
-    def __init__(self, position: Vector2D, screen_size: Vector2D):
-        self.pos = position
-        self.speed = Vector2D(0.0, 0.0)
-        self.max_speed = 50
-        self.max_hp = 100.0
-        self.current_hp = 100.0
-        self.screen_size = screen_size
-        self.margin = Vector2D(70, 70)
-        self.space_size = screen_size + self.margin * 2
-        self.__trails: list[UnitTrail] = []
-
-    def update(self):
-        for trail in self.__trails:
-            trail.update()
-        self.__trails = [trail for trail in self.__trails if trail.exists]
-        self.__trails.append(UnitTrail(self.pos, size=12, decay_speed=0.2))
-        self.pos = (self.pos + self.margin + self.speed) % self.space_size - self.margin
-
-    def get_damage(self, damage: float):
-        self.current_hp = max(self.current_hp - damage, 0)
-
+class Player(Character):
     def accelerate(self, direction: Vector2D):
         self.speed += direction * 0.08
         self.speed = self.speed.limit(self.max_speed)
 
-    def draw(self, screen):
-        for trail in self.__trails:
-            trail.draw(screen)
+    def draw_character(self, screen):
         draw_svg(
             screen,
             svg_path="data/ship_2_a.svg",  # Replace with your SVG file path
@@ -39,6 +16,9 @@ class Player:
             scale_k=0.15,
             rotation_deg=self.speed.angle,  # Rotation angle in degrees
         )
+
+    def draw(self, screen):
+        super().draw(screen)
         self.draw_hp_bar(screen)
 
     def draw_hp_bar(self, screen):

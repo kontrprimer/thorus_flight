@@ -1,28 +1,21 @@
 import time
 
 from game.framework import Vector2D, draw_svg
-from game.units.player import Player
-from game.units.trail import UnitTrail
+from .character import Character
 
 
-class Enemy:
-    def __init__(self, position: Vector2D, target: Player, screen_size: Vector2D):
-        self.pos = position
+class Enemy(Character):
+    def __init__(
+        self,
+        position: Vector2D,
+        screen_size: Vector2D,
+        target: Character,
+        max_speed: float = 6,
+        hp: float = 100,
+    ):
+        super().__init__(position, screen_size, max_speed, hp)
         self.target = target
-        self.speed = Vector2D(0.1, 0.1)
-        self.max_speed = 6
-        self.screen_size = screen_size
-        self.margin = Vector2D(70, 70)
-        self.space_size = screen_size + self.margin * 2
-        self.__trails: list[UnitTrail] = []
         self.__last_attack_time = 0.0
-
-    def update(self):
-        for trail in self.__trails:
-            trail.update()
-        self.__trails = [trail for trail in self.__trails if trail.exists]
-        self.__trails.append(UnitTrail(self.pos, size=12, decay_speed=0.2))
-        self.pos = (self.pos + self.margin + self.speed) % self.space_size - self.margin
 
     def accelerate(self):
         direction = self.target.pos - self.pos
@@ -36,17 +29,15 @@ class Enemy:
             return
         from_target_vector = self.pos - self.target.pos
         if from_target_vector.length < 50:
-            self.target.get_damage(10)
+            self.target.take_damage(10)
             self.speed = from_target_vector.set_length(self.max_speed)
             self.__last_attack_time = time.time()
 
-    def draw(self, screen):
-        for trail in self.__trails:
-            trail.draw(screen)
+    def draw_character(self, screen):
         draw_svg(
             screen,
-            svg_path="data/ship_1_a.svg",  # Replace with your SVG file path
+            svg_path="data/ship_1_a.svg",
             pos=self.pos,
             scale_k=0.15,
-            rotation_deg=self.speed.angle,  # Rotation angle in degrees
+            rotation_deg=self.speed.angle,
         )

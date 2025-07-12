@@ -48,6 +48,8 @@ class Vector2D:
         return self
 
     def set_length(self, length: float) -> "Vector2D":
+        if self == Vector2D(0, 0):
+            return Vector2D(length, 0)
         ratio = length / self.length
         return self * ratio
 
