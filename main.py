@@ -24,26 +24,38 @@ def launch():
             if e.type == pygame.QUIT:
                 run = False
         keys = pygame.key.get_pressed()
-        acceleration = Vector2D(0, 0)
-        for key, step in KEY_DIRECTIONS.items():
-            if keys[key]:
-                acceleration += step
-        acceleration = acceleration.limit(1)
-        player.accelerate(acceleration)
-        for enemy in enemies:
-            enemy.accelerate()
-        player.update()
-        for enemy in enemies:
-            enemy.update(SCREEN)
-            enemy.try_attack()
-        screen.fill(BLACK)
-        for enemy in enemies:
-            enemy.draw(screen)
-        player.draw(screen)
+        accelerate_units(enemies, keys, player)
+        update_units(enemies, player)
+        draw_screen(enemies, player, screen)
         pygame.display.flip()
         clock.tick(165)
 
     pygame.quit()
+
+
+def draw_screen(enemies, player, screen):
+    screen.fill(BLACK)
+    for enemy in enemies:
+        enemy.draw(screen)
+    player.draw(screen)
+
+
+def update_units(enemies, player):
+    player.update()
+    for enemy in enemies:
+        enemy.update(SCREEN)
+        enemy.try_attack()
+
+
+def accelerate_units(enemies, keys, player):
+    acceleration = Vector2D(0, 0)
+    for key, step in KEY_DIRECTIONS.items():
+        if keys[key]:
+            acceleration += step
+    acceleration = acceleration.limit(1)
+    player.accelerate(acceleration)
+    for enemy in enemies:
+        enemy.accelerate()
 
 
 if __name__ == "__main__":
