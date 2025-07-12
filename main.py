@@ -1,5 +1,5 @@
 import pygame
-from game.player.player import Player, Enemy
+from game.player.player import Player, Enemy, draw_hp_bar
 from game.framework import Vector2D
 from game.controls import KEY_DIRECTIONS
 
@@ -33,6 +33,7 @@ def launch():
         screen.fill(BLACK)
         enemy.draw(screen)
         player.draw(screen)
+        draw_hp_bar(screen, max_hp=40, current_hp=30, screen_size=SCREEN)
         pygame.display.flip()
         clock.tick(165)
 

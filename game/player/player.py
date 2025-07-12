@@ -38,7 +38,7 @@ class Enemy:
         self.pos = position
         self.target = target
         self.speed = Vector2D(0.1, 0.1)
-        self.max_speed = 10
+        self.max_speed = 3
         self.__trails: list[UnitTrail] = []
 
     def update(self, clip: Vector2D):
@@ -87,3 +87,32 @@ class UnitTrail:
     @property
     def exists(self):
         return self.size > 0
+
+
+def draw_hp_bar(screen, max_hp, current_hp, screen_size):
+    screen_size = list(screen_size)
+    bar_width = screen_size[0] // 4  # HP bar takes up 1/4 of screen width
+    bar_height = screen_size[1] // 30  # Thin bar relative to screen height
+    margin = 20  # Padding from edges
+
+    # Calculate position in bottom-left corner
+    x = margin
+    y = screen_size[1] - bar_height - margin
+
+    # Calculate fill percentage
+    fill_ratio = max(0, min(current_hp / max_hp, 1))  # Clamp between 0 and 1
+    fill_width = int(bar_width * fill_ratio)
+
+    # Colors
+    bg_color = (60, 60, 60)  # Dark gray background
+    hp_color = (200, 50, 50)  # Red fill
+    border_color = (255, 255, 255)  # White border
+
+    # Draw background
+    pygame.draw.rect(screen, bg_color, (x, y, bar_width, bar_height))
+
+    # Draw filled portion
+    pygame.draw.rect(screen, hp_color, (x, y, fill_width, bar_height))
+
+    # Draw border
+    pygame.draw.rect(screen, border_color, (x, y, bar_width, bar_height), 2)
