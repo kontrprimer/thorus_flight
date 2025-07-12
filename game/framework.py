@@ -47,6 +47,10 @@ class Vector2D:
             return self * ratio
         return self
 
+    def set_length(self, length: float) -> "Vector2D":
+        ratio = length / self.length
+        return self * ratio
+
 
 @cache
 def load_svg_as_surface(svg_path, scale=1.0):

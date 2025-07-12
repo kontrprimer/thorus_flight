@@ -1,5 +1,5 @@
 import pygame
-from game.player.player import Player
+from game.player.player import Player, Enemy
 from game.framework import Vector2D
 from game.controls import KEY_DIRECTIONS
 
@@ -13,6 +13,7 @@ def launch():
     clock = pygame.time.Clock()
     # Cap the frame rate
     player = Player(Vector2D(100, 100))
+    enemy = Enemy(Vector2D(500, 500), target=player)
 
     run = True
     while run:
@@ -26,8 +27,11 @@ def launch():
                 acceleration += step
         acceleration = acceleration.limit(1)
         player.accelerate(acceleration)
+        enemy.accelerate()
         player.update(SCREEN)
+        enemy.update(SCREEN)
         screen.fill(BLACK)
+        enemy.draw(screen)
         player.draw(screen)
         pygame.display.flip()
         clock.tick(165)
