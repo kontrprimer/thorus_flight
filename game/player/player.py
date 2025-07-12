@@ -88,7 +88,9 @@ class Enemy:
 
     def accelerate(self):
         direction = self.target.pos - self.pos
-        self.speed += direction.set_length(0.05)
+        self.speed = self.speed.set_length(
+            self.speed.length - 0.02
+        ) + direction.set_length(0.07)
         self.speed = self.speed.limit(self.max_speed)
 
     def try_attack(self):
