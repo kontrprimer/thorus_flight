@@ -13,11 +13,10 @@ def launch():
     pygame.init()
     screen = pygame.display.set_mode(list(SCREEN))
     clock = pygame.time.Clock()
-    # Cap the frame rate
     player = Player(SCREEN * 0.5, SCREEN)
     enemies = [
-        Enemy(Vector2D(-70, -70), target=player, screen_size=SCREEN),
-        Enemy(SCREEN + Vector2D(60, 60), target=player, screen_size=SCREEN),
+        Enemy(Vector2D(-69, -69), target=player, screen_size=SCREEN),
+        Enemy(SCREEN + Vector2D(69, 69), target=player, screen_size=SCREEN),
     ]
     frame_start = time.time()
     run = True
