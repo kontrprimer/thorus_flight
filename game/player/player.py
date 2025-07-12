@@ -38,7 +38,7 @@ class Enemy:
         self.pos = position
         self.target = target
         self.speed = Vector2D(0.1, 0.1)
-        self.max_speed = 30
+        self.max_speed = 10
         self.__trails: list[UnitTrail] = []
 
     def update(self, clip: Vector2D):
@@ -50,7 +50,7 @@ class Enemy:
 
     def accelerate(self):
         direction = self.target.pos - self.pos
-        self.speed += direction.set_length(0.07)
+        self.speed += direction.set_length(0.5)
         self.speed = self.speed.limit(self.max_speed)
 
     def draw(self, screen):
