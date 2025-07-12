@@ -1,5 +1,5 @@
 import pygame
-from .framework import Vector
+from .framework import Vector2D
 
 
 class Controls:
@@ -21,8 +21,8 @@ class Controls:
 
 
 KEY_DIRECTIONS = {
-    Controls.UP: Vector([0, -1]),
-    Controls.DOWN: Vector([0, 1]),
-    Controls.LEFT: Vector([-1, 0]),
-    Controls.RIGHT: Vector([1, 0]),
+    Controls.UP: Vector2D(0, -1),
+    Controls.DOWN: Vector2D(0, 1),
+    Controls.LEFT: Vector2D(-1, 0),
+    Controls.RIGHT: Vector2D(1, 0),
 }

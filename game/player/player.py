@@ -1,16 +1,16 @@
-from game.framework import Vector, draw_svg
+from game.framework import Vector2D, draw_svg
 
 
 class Player:
-    def __init__(self, position: Vector):
+    def __init__(self, position: Vector2D):
         self.pos = position
-        self.speed = Vector([0.001, 0.5])
+        self.speed = Vector2D(0.001, 0.5)
         self.max_speed = 1
 
-    def move(self, clip: Vector):
+    def move(self, clip: Vector2D):
         self.pos = (self.pos + self.speed) % clip
 
-    def accelerate(self, direction: Vector):
+    def accelerate(self, direction: Vector2D):
         self.speed += direction * 0.0008
         self.speed = self.speed.limit(self.max_speed)
 

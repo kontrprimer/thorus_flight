@@ -6,45 +6,41 @@ import pygame
 import math
 
 
-class Vector:
-    def __init__(self, coordinates):
-        self.__coordinates = list(coordinates)
+class Vector2D:
+    def __init__(self, x, y):
+        self.__x = x
+        self.__y = y
 
-    def __len__(self):
-        return len(self.__coordinates)
-
-    def __eq__(self, other: "Vector"):
-        return self.__coordinates == other.__coordinates
+    def __eq__(self, other: "Vector2D"):
+        return self.__x == other.__x and self.__y == other.__y
 
     def __mul__(self, num: float):
-        return Vector([x * num for x in self.__coordinates])
+        return Vector2D(self.__x * num, self.__y * num)
 
-    def __add__(self, other: "Vector") -> "Vector":
-        return Vector([i + j for i, j in zip(self.__coordinates, other.__coordinates)])
+    def __add__(self, other: "Vector2D") -> "Vector2D":
+        return Vector2D(self.__x + other.__x, self.__y + other.__y)
 
-    def __sub__(self, other: "Vector") -> "Vector":
-        return Vector([i - j for i, j in zip(self.__coordinates, other.__coordinates)])
+    def __sub__(self, other: "Vector2D") -> "Vector2D":
+        return Vector2D(self.__x - other.__x, self.__y - other.__y)
 
-    def __mod__(self, other: "Vector") -> "Vector":
-        return Vector([i % j for i, j in zip(self.__coordinates, other.__coordinates)])
+    def __mod__(self, other: "Vector2D") -> "Vector2D":
+        return Vector2D(self.__x % other.__x, self.__y % other.__y)
 
-    def __truediv__(self, other: float) -> "Vector":
-        return Vector([i / other for i in self.__coordinates])
+    def __truediv__(self, num: float) -> "Vector2D":
+        return Vector2D(self.__x * num, self.__y * num)
 
     def __iter__(self):
-        return iter(self.__coordinates)
+        return iter([self.__x, self.__y])
 
     @property
     def angle(self) -> float:
-        return (
-            math.degrees(math.atan2(self.__coordinates[1], self.__coordinates[0])) + 90
-        )
+        return math.degrees(math.atan2(self.__y, self.__x)) + 90
 
     @property
     def length(self) -> float:
-        return sum(i**2 for i in self.__coordinates) ** 0.5
+        return (self.__x * self.__x + self.__y * self.__y) ** 0.5
 
-    def limit(self, limit: float) -> "Vector":
+    def limit(self, limit: float) -> "Vector2D":
         length = self.length
         if length > limit:
             ratio = limit / length
@@ -61,7 +57,7 @@ def load_svg_as_surface(svg_path, scale=1.0):
     return pygame.image.load(io.BytesIO(png_data)).convert_alpha()
 
 
-def draw_svg(screen, svg_path, pos: Vector, scale_k, rotation_deg):
+def draw_svg(screen, svg_path, pos: Vector2D, scale_k, rotation_deg):
     # Load and scale SVG
     svg_surf = load_svg_as_surface(svg_path, scale=scale_k)
 
