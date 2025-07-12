@@ -17,7 +17,7 @@ class Player:
     def draw(self, screen):
         draw_svg(
             screen,
-            svg_path="ship_2.svg",  # Replace with your SVG file path
+            svg_path="ship_2_a.svg",  # Replace with your SVG file path
             pos=self.pos,
             scale_k=0.15,
             rotation_deg=self.speed.angle,  # Rotation angle in degrees
