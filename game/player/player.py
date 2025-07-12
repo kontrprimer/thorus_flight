@@ -1,5 +1,5 @@
 import pygame.draw
-
+import time
 from game.framework import Vector2D, draw_svg
 
 
@@ -19,6 +19,9 @@ class Player:
         self.__trails = [trail for trail in self.__trails if trail.exists]
         self.__trails.append(UnitTrail(self.pos, size=12, decay_speed=0.2))
         self.pos = (self.pos + self.speed) % self.screen_size
+
+    def get_damage(self, damage: float):
+        self.current_hp = max(self.current_hp - damage, 0)
 
     def accelerate(self, direction: Vector2D):
         self.speed += direction * 0.08
@@ -72,8 +75,9 @@ class Enemy:
         self.pos = position
         self.target = target
         self.speed = Vector2D(0.1, 0.1)
-        self.max_speed = 3
+        self.max_speed = 6
         self.__trails: list[UnitTrail] = []
+        self.__last_attack_time = 0.0
 
     def update(self, clip: Vector2D):
         for trail in self.__trails:
@@ -84,8 +88,17 @@ class Enemy:
 
     def accelerate(self):
         direction = self.target.pos - self.pos
-        self.speed += direction.set_length(0.5)
+        self.speed += direction.set_length(0.05)
         self.speed = self.speed.limit(self.max_speed)
+
+    def try_attack(self):
+        if time.time() - self.__last_attack_time < 1:
+            return
+        from_target_vector = self.pos - self.target.pos
+        if from_target_vector.length < 50:
+            self.target.get_damage(10)
+            self.speed = from_target_vector.set_length(self.max_speed)
+            self.__last_attack_time = time.time()
 
     def draw(self, screen):
         for trail in self.__trails:

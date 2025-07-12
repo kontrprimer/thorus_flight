@@ -30,6 +30,7 @@ def launch():
         enemy.accelerate()
         player.update()
         enemy.update(SCREEN)
+        enemy.try_attack()
         screen.fill(BLACK)
         enemy.draw(screen)
         player.draw(screen)
