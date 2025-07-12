@@ -1,5 +1,4 @@
 import pygame
-
 from game.player.player import Player
 from game.framework import Vector2D
 from game.controls import KEY_DIRECTIONS
@@ -12,6 +11,7 @@ def launch():
     pygame.init()
     screen = pygame.display.set_mode(list(SCREEN))
     clock = pygame.time.Clock()
+    # Cap the frame rate
     player = Player(Vector2D(100, 100))
 
     run = True
@@ -26,15 +26,13 @@ def launch():
                 acceleration += step
         acceleration = acceleration.limit(1)
         player.accelerate(acceleration)
-        player.move(SCREEN)
+        player.update(SCREEN)
         screen.fill(BLACK)
         player.draw(screen)
         pygame.display.flip()
+        clock.tick(165)
 
     pygame.quit()
-
-    # Cap the frame rate
-    clock.tick(60)
 
 
 if __name__ == "__main__":

@@ -1,20 +1,29 @@
+import pygame.draw
+
 from game.framework import Vector2D, draw_svg
 
 
 class Player:
     def __init__(self, position: Vector2D):
         self.pos = position
-        self.speed = Vector2D(0.001, 0.5)
-        self.max_speed = 1
+        self.speed = Vector2D(0.1, 5.1)
+        self.max_speed = 50
+        self.__trails: list[PlayerTrail] = []
 
-    def move(self, clip: Vector2D):
+    def update(self, clip: Vector2D):
+        for trail in self.__trails:
+            trail.update()
+        self.__trails = [trail for trail in self.__trails if trail.exists]
+        self.__trails.append(PlayerTrail(self.pos, size=12, decay_speed=0.2))
         self.pos = (self.pos + self.speed) % clip
 
     def accelerate(self, direction: Vector2D):
-        self.speed += direction * 0.0008
+        self.speed += direction * 0.08
         self.speed = self.speed.limit(self.max_speed)
 
     def draw(self, screen):
+        for trail in self.__trails:
+            trail.draw(screen)
         draw_svg(
             screen,
             svg_path="ship_2_a.svg",  # Replace with your SVG file path
@@ -22,3 +31,20 @@ class Player:
             scale_k=0.15,
             rotation_deg=self.speed.angle,  # Rotation angle in degrees
         )
+
+
+class PlayerTrail:
+    def __init__(self, pos, size, decay_speed):
+        self.pos = pos
+        self.size = size
+        self.decay_speed = decay_speed
+
+    def update(self):
+        self.size = max(0, self.size - self.decay_speed)
+
+    def draw(self, screen):
+        pygame.draw.circle(screen, (255, 255, 255), list(self.pos), self.size)
+
+    @property
+    def exists(self):
+        return self.size > 0
