@@ -1,5 +1,6 @@
 import pygame
-from game.player.player import Player, Enemy
+from game.units.player import Player
+from game.units.enemies import Enemy
 from game.framework import Vector2D
 from game.controls import KEY_DIRECTIONS
 import time
