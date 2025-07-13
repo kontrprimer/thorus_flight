@@ -32,7 +32,7 @@ class Battle(Scene):
         self.enemies = self.define_enemies()
         self.player.enemies = self.enemies
 
-    def define_enemies(self):
+    def define_enemies(self) -> list[Enemy]:
         raise NotImplementedError
 
     def update(self):
