@@ -1,12 +1,11 @@
 import pygame
+
 from game.units.player import Player
-from game.units.enemies import Enemy
 from game.framework import Vector2D
-from game.controls import KEY_DIRECTIONS
+from game.scene import Stage01
 import time
 
 SCREEN = Vector2D(1920, 1080)
-BLACK = (0, 0, 0)
 
 
 def launch():
@@ -14,20 +13,15 @@ def launch():
     screen = pygame.display.set_mode(list(SCREEN))
     clock = pygame.time.Clock()
     player = Player(SCREEN * 0.5, SCREEN)
-    enemies = [
-        Enemy(Vector2D(-69, -69), target=player, screen_size=SCREEN),
-        Enemy(SCREEN + Vector2D(69, 69), target=player, screen_size=SCREEN),
-    ]
+    scene = Stage01(player, SCREEN)
     frame_start = time.time()
     run = True
     while run:
         for e in pygame.event.get():
             if e.type == pygame.QUIT:
                 run = False
-        keys = pygame.key.get_pressed()
-        accelerate_units(enemies, keys, player)
-        update_units(enemies, player)
-        draw_screen(enemies, player, screen)
+        scene.update()
+        scene.draw(screen)
 
         frame_end = time.time()
         draw_debug_text(
@@ -40,31 +34,6 @@ def launch():
         frame_start = frame_end
 
     pygame.quit()
-
-
-def draw_screen(enemies, player, screen):
-    screen.fill(BLACK)
-    for enemy in enemies:
-        enemy.draw(screen)
-    player.draw(screen)
-
-
-def update_units(enemies, player):
-    player.update()
-    for enemy in enemies:
-        enemy.update()
-        enemy.try_attack()
-
-
-def accelerate_units(enemies, keys, player):
-    acceleration = Vector2D(0, 0)
-    for key, step in KEY_DIRECTIONS.items():
-        if keys[key]:
-            acceleration += step
-    acceleration = acceleration.limit(1)
-    player.accelerate(acceleration)
-    for enemy in enemies:
-        enemy.accelerate()
 
 
 def draw_debug_text(
