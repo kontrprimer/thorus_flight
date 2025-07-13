@@ -1,4 +1,4 @@
-from game.framework import Vector2D
+from game.framework.vector2d import Vector2D
 
 
 class Unit:

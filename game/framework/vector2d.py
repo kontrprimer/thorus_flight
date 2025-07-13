@@ -1,8 +1,3 @@
-import io
-from functools import cache
-
-import cairosvg
-import pygame
 import math
 
 
@@ -52,22 +47,3 @@ class Vector2D:
             return Vector2D(length, 0)
         ratio = length / self.length
         return self * ratio
-
-
-@cache
-def load_svg_as_surface(svg_path, scale=1.0):
-    # Convert SVG to PNG in memory
-    png_data = cairosvg.svg2png(
-        url=svg_path, output_width=None, output_height=None, scale=scale
-    )
-    return pygame.image.load(io.BytesIO(png_data)).convert_alpha()
-
-
-def draw_svg(screen, svg_path, pos: Vector2D, scale_k, rotation_deg):
-    svg_surf = load_svg_as_surface(svg_path, scale=scale_k)
-
-    # Smooth anti-aliased rotation
-    rotated_surf = pygame.transform.rotozoom(svg_surf, -rotation_deg, 1.0)
-
-    rect = rotated_surf.get_rect(center=list(pos))
-    screen.blit(rotated_surf, rect)

@@ -1,4 +1,4 @@
-from .framework import Vector2D
+from .framework.vector2d import Vector2D
 from .units.player import Player
 from .units.enemies import Enemy
 from .controls import KEY_DIRECTIONS

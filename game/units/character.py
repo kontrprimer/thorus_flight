@@ -1,6 +1,6 @@
 import datetime
 
-from game.framework import Vector2D
+from game.framework.vector2d import Vector2D
 from game.units.unit_base import Unit
 from game.units.trail import UnitTrail
 

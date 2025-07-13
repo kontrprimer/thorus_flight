@@ -1,6 +1,7 @@
 import time
 
-from game.framework import Vector2D, draw_svg
+from game.framework.vector2d import Vector2D
+from game.framework.draw_image import draw_image
 from .character import Character
 
 
@@ -34,10 +35,10 @@ class Enemy(Character):
             self.__last_attack_time = time.time()
 
     def draw_character(self, screen):
-        draw_svg(
+        draw_image(
             screen,
-            svg_path="data/ship_1_a.svg",
+            image_path="data/ship_1_a.png",
             pos=self.pos,
-            scale_k=0.15,
+            scale_k=0.6,
             rotation_deg=self.speed.angle,
         )

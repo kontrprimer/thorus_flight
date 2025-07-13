@@ -1,5 +1,5 @@
 import pygame
-from .framework import Vector2D
+from .framework.vector2d import Vector2D
 
 
 class Controls:

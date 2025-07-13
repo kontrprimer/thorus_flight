@@ -1,7 +1,7 @@
 import pygame
 
 from game.units.player import Player
-from game.framework import Vector2D
+from game.framework.vector2d import Vector2D
 from game.scene import Battle01
 import time
 
