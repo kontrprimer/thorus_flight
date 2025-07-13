@@ -22,7 +22,7 @@ class Enemy(Character):
         self.speed = self.speed.set_length(
             self.speed.length - 0.02
         ) + direction.set_length(0.07)
-        self.speed = self.speed.limit(self.max_speed)
+        self.speed = self.speed.limit(max(self.max_speed, self.speed.length))
 
     def try_attack(self):
         if time.time() - self.__last_attack_time < 1:

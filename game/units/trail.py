@@ -16,8 +16,8 @@ class UnitTrail(Unit):
         self.original_size = size
         self.decay_speed = decay_speed
 
-    def update(self):
-        super().update()
+    def update(self, keys):
+        super().update(keys)
         self.size = max(0.0, self.size - self.decay_speed)
 
     def draw(self, screen):

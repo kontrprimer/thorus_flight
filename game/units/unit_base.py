@@ -9,7 +9,7 @@ class Unit:
         self.margin = Vector2D(70, 70)
         self.space_size = screen_size + self.margin * 2
 
-    def update(self):
+    def update(self, keys):
         self.pos = (self.pos + self.margin + self.speed) % self.space_size - self.margin
 
     def draw(self, screen):

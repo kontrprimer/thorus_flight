@@ -1,12 +1,17 @@
+import time
+
 import pygame.draw
+
 from game.framework import Vector2D, draw_svg
 from .character import Character
+from ..controls import Controls
 
 
 class Player(Character):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.enemies = []
+        self.enemies: list[Character] = []
+        self.weapons: list[Weapon] = [Weapon(self.pos)]
 
     def accelerate(self, direction: Vector2D):
         self.speed += direction * 0.08
@@ -22,8 +27,17 @@ class Player(Character):
         )
 
     def draw(self, screen):
+        for weapon in self.weapons:
+            weapon.draw(screen)
         super().draw(screen)
         self.draw_hp_bar(screen)
+
+    def update(self, keys):
+        super().update(keys)
+        for weapon in self.weapons:
+            weapon.pos = self.pos
+            if keys[weapon.key]:
+                weapon.try_attack(self.enemies)
 
     def draw_hp_bar(self, screen):
         screen_size = list(self.screen_size)
@@ -54,3 +68,40 @@ class Player(Character):
 
         # Draw border
         pygame.draw.rect(screen, border_color, (x, y, bar_width, bar_height), 2)
+
+
+class Weapon:
+    def __init__(self, pos: Vector2D):
+        self.damage: float = 50
+        self.range: float = 450
+        self.push_power: float = 30
+        self.pos: Vector2D = pos
+        self.cooldown: float = 1
+        self.last_attack_time: float = 0
+        self.key = Controls.SPACE
+
+    def try_attack(self, targets: list[Character]):
+        current_time = time.time()
+        if current_time - self.last_attack_time < self.cooldown:
+            return
+        self.last_attack_time = current_time
+        for target in targets:
+            to_target = target.pos - self.pos
+            distance_to_target = to_target.length
+            if distance_to_target <= self.range:
+                power = 1 - (distance_to_target / self.range)
+                target.take_damage(self.damage * power)
+                target.speed += to_target.set_length(self.push_power * power)
+
+    def draw(self, screen):
+        effect_time = 0.05
+        current_time = time.time()
+        time_since_attack = current_time - self.last_attack_time
+        if time_since_attack < effect_time:
+            effect_intensity = time_since_attack / effect_time
+            pygame.draw.circle(
+                screen,
+                (180 + 75 * effect_intensity, 100 + 155 * effect_intensity, 255),
+                list(self.pos),
+                self.range * effect_intensity,
+            )

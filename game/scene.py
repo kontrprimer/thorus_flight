@@ -38,7 +38,7 @@ class Battle(Scene):
     def update(self):
         keys = pygame.key.get_pressed()
         self.accelerate_units(keys)
-        self.update_units()
+        self.update_units(keys)
 
     def draw(self, screen):
         screen.fill(BLACK)
@@ -46,11 +46,11 @@ class Battle(Scene):
             enemy.draw(screen)
         self.player.draw(screen)
 
-    def update_units(self):
-        self.player.update()
+    def update_units(self, keys):
+        self.player.update(keys)
         self.enemies = [enemy for enemy in self.enemies if enemy.exists]
         for enemy in self.enemies:
-            enemy.update()
+            enemy.update(keys)
             enemy.try_attack()
 
     def finished(self):
@@ -89,4 +89,4 @@ class Battle02(Battle):
         ]
 
     def exit_scene(self):
-        raise NotImplementedError
+        return self
