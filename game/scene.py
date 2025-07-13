@@ -1,8 +1,8 @@
 from .framework.vector2d import Vector2D
 from .units.player import Player
 from .units.enemies import Enemy
-from .controls import KEY_DIRECTIONS
-from .colours import BLACK
+from .controls import KEY_DIRECTIONS, Controls
+from .colours import BLACK, WHITE
 
 import pygame
 
@@ -11,6 +11,7 @@ class Scene:
     def __init__(self, player: Player, screen_size: Vector2D):
         self.player = player
         self.screen_size = screen_size
+        self._end_game = False
 
     def update(self):
         raise NotImplementedError
@@ -22,6 +23,9 @@ class Scene:
         raise NotImplementedError
 
     @property
+    def end_game(self):
+        return self._end_game
+
     def finished(self):
         raise NotImplementedError
 
@@ -89,4 +93,44 @@ class Battle02(Battle):
         ]
 
     def exit_scene(self):
-        return self
+        return WinScreen(self.player, self.screen_size)
+
+
+class WinScreen(Scene):
+    def __init__(self, player: Player, screen_size: Vector2D):
+        super().__init__(player, screen_size)
+
+    def update(self):
+        keys = pygame.key.get_pressed()
+        if keys[Controls.QUIT]:
+            self._end_game = True
+
+    def draw(self, screen):
+        screen.fill(BLACK)
+        font = pygame.font.Font(None, 60)
+        text = font.render("You Win!", True, WHITE)
+        text_rect = text.get_rect(center=list(self.screen_size * 0.5))
+        screen.blit(text, text_rect)
+
+    def finished(self):
+        return False
+
+
+class LoseScreen(Scene):
+    def __init__(self, player: Player, screen_size: Vector2D):
+        super().__init__(player, screen_size)
+
+    def update(self):
+        keys = pygame.key.get_pressed()
+        if keys[Controls.QUIT]:
+            self._end_game = True
+
+    def draw(self, screen):
+        screen.fill(BLACK)
+        font = pygame.font.Font(None, 60)
+        text = font.render("You Lose!", True, WHITE)
+        text_rect = text.get_rect(center=list(self.screen_size * 0.5))
+        screen.blit(text, text_rect)
+
+    def finished(self):
+        return False

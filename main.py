@@ -24,7 +24,9 @@ def launch():
         scene.draw(screen)
         if scene.finished():
             scene = scene.exit_scene()
-
+            print(f"New scene: {type(scene).__name__}")
+        if scene.end_game:
+            run = False
         frame_end = time.time()
         draw_debug_text(
             screen,
