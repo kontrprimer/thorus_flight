@@ -17,6 +17,7 @@ class Character(Unit):
         self.current_hp = hp
         self.__trails: list[UnitTrail] = []
 
+    @property
     def exists(self):
         return self.current_hp > 0
 

@@ -2,7 +2,7 @@ import pygame
 
 from game.units.player import Player
 from game.framework import Vector2D
-from game.scene import Stage01
+from game.scene import Battle01
 import time
 
 SCREEN = Vector2D(1920, 1080)
@@ -13,7 +13,7 @@ def launch():
     screen = pygame.display.set_mode(list(SCREEN))
     clock = pygame.time.Clock()
     player = Player(SCREEN * 0.5, SCREEN)
-    scene = Stage01(player, SCREEN)
+    scene = Battle01(player, SCREEN)
     frame_start = time.time()
     run = True
     while run:
@@ -22,6 +22,8 @@ def launch():
                 run = False
         scene.update()
         scene.draw(screen)
+        if scene.finished():
+            scene = scene.exit_scene()
 
         frame_end = time.time()
         draw_debug_text(

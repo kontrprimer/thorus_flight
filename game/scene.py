@@ -18,7 +18,7 @@ class Scene:
     def draw(self, screen):
         raise NotImplementedError
 
-    def exit(self):
+    def exit_scene(self):
         raise NotImplementedError
 
     @property
@@ -26,15 +26,14 @@ class Scene:
         raise NotImplementedError
 
 
-class Stage01(Scene):
+class Battle(Scene):
     def __init__(self, player: Player, screen_size: Vector2D):
         super().__init__(player, screen_size)
-        self.enemies = [
-            Enemy(Vector2D(-69, -69), target=player, screen_size=screen_size),
-            Enemy(
-                screen_size + Vector2D(69, 69), target=player, screen_size=screen_size
-            ),
-        ]
+        self.enemies = self.define_enemies()
+        self.player.enemies = self.enemies
+
+    def define_enemies(self):
+        raise NotImplementedError
 
     def update(self):
         keys = pygame.key.get_pressed()
@@ -49,9 +48,13 @@ class Stage01(Scene):
 
     def update_units(self):
         self.player.update()
+        self.enemies = [enemy for enemy in self.enemies if enemy.exists]
         for enemy in self.enemies:
             enemy.update()
             enemy.try_attack()
+
+    def finished(self):
+        return len(self.enemies) == 0
 
     def accelerate_units(self, keys):
         acceleration = Vector2D(0, 0)
@@ -62,3 +65,28 @@ class Stage01(Scene):
         self.player.accelerate(acceleration)
         for enemy in self.enemies:
             enemy.accelerate()
+
+
+class Battle01(Battle):
+    def define_enemies(self):
+        return [
+            Enemy(Vector2D(-69, -69), target=self.player, screen_size=self.screen_size),
+        ]
+
+    def exit_scene(self):
+        return Battle02(self.player, self.screen_size)
+
+
+class Battle02(Battle):
+    def define_enemies(self):
+        return [
+            Enemy(Vector2D(-69, -69), target=self.player, screen_size=self.screen_size),
+            Enemy(
+                self.screen_size + Vector2D(69, 69),
+                target=self.player,
+                screen_size=self.screen_size,
+            ),
+        ]
+
+    def exit_scene(self):
+        raise NotImplementedError
