@@ -12,8 +12,16 @@ class Enemy(Character):
         self.__last_attack_time = 0.0
 
     def accelerate(self):
-        direction = self.target.pos - self.pos
-        self.speed = self.speed + direction.set_length(0.04) / self.mass
+        if time.time() - self.__last_attack_time < 1:
+            return
+        pos_delta = self.target.pos - self.pos
+        speed_delta = self.target.speed - self.speed
+        speed_correction = speed_delta - speed_delta.project_on(pos_delta)
+        if speed_correction.length > 0.04:
+            acceleration = speed_correction
+        else:
+            acceleration = pos_delta + speed_correction
+        self.speed = self.speed + acceleration.set_length(0.04) / self.mass
 
     def try_attack(self):
         if time.time() - self.__last_attack_time < 1:
