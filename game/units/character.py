@@ -10,11 +10,9 @@ class Character(Unit):
         self,
         position: Vector2D,
         screen_size: Vector2D,
-        max_speed: float = 50,
         hp: float = 100,
     ):
         super().__init__(position, screen_size)
-        self.max_speed = max_speed
         self.max_hp = hp
         self.current_hp = hp
         self.__trails: list[UnitTrail] = []

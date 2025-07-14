@@ -15,15 +15,14 @@ class Player(Character):
         self.weapons: list[Weapon] = [Weapon(self.pos)]
 
     def accelerate(self, direction: Vector2D):
-        self.speed += direction * 0.08
-        self.speed = self.speed.limit(self.max_speed)
+        self.speed += direction * 0.04
 
     def draw_character(self, screen):
         draw_image(
             screen,
             image_path="data/ship_2_a.png",  # Replace with your SVG file path
             pos=self.pos,
-            scale_k=0.6,
+            scale_k=0.3,
             rotation_deg=self.speed.angle,  # Rotation angle in degrees
         )
 
@@ -74,8 +73,8 @@ class Player(Character):
 class Weapon:
     def __init__(self, pos: Vector2D):
         self.damage: float = 5000
-        self.range: float = 450
-        self.push_power: float = 30
+        self.range: float = 200
+        self.push_power: float = 15
         self.pos: Vector2D = pos
         self.cooldown: float = 1
         self.last_attack_time: float = 0

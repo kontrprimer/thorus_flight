@@ -27,6 +27,9 @@ class Vector2D:
     def __iter__(self):
         return iter([self.__x, self.__y])
 
+    def __str__(self):
+        return str(f"[x: {self.__x}, y: {self.__y}]")
+
     @property
     def angle(self) -> float:
         return math.degrees(math.atan2(self.__y, self.__x)) + 90

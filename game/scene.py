@@ -35,6 +35,7 @@ class Battle(Scene):
         super().__init__(player, screen_size)
         self.enemies = self.define_enemies()
         self.player.enemies = self.enemies
+        self.air_friction = 0.001
 
     def define_enemies(self) -> list[Enemy]:
         raise NotImplementedError
@@ -61,14 +62,19 @@ class Battle(Scene):
         return len(self.enemies) == 0
 
     def accelerate_units(self, keys):
+        self.accelerate_player(keys)
+        for enemy in self.enemies:
+            enemy.accelerate()
+            enemy.speed = enemy.speed * (1 - self.air_friction)
+
+    def accelerate_player(self, keys):
         acceleration = Vector2D(0, 0)
         for key, step in KEY_DIRECTIONS.items():
             if keys[key]:
                 acceleration += step
         acceleration = acceleration.limit(1)
         self.player.accelerate(acceleration)
-        for enemy in self.enemies:
-            enemy.accelerate()
+        self.player.speed = self.player.speed * (1 - self.air_friction)
 
 
 class Battle01(Battle):
