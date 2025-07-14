@@ -12,7 +12,7 @@ def launch():
     pygame.init()
     screen = pygame.display.set_mode(list(SCREEN))
     clock = pygame.time.Clock()
-    player = Player(SCREEN * 0.5, SCREEN)
+    player = Player(position=SCREEN * 0.5, screen_size=SCREEN, size=25)
     scene = Battle01(player, SCREEN)
     frame_start = time.time()
     run = True

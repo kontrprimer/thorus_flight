@@ -1,18 +1,12 @@
 import datetime
 
-from game.framework.vector2d import Vector2D
 from game.units.unit_base import Unit
 from game.units.trail import UnitTrail
 
 
 class Character(Unit):
-    def __init__(
-        self,
-        position: Vector2D,
-        screen_size: Vector2D,
-        hp: float = 100,
-    ):
-        super().__init__(position, screen_size)
+    def __init__(self, hp: float = 100, **kwargs):
+        super().__init__(**kwargs)
         self.max_hp = hp
         self.current_hp = hp
         self.__trails: list[UnitTrail] = []

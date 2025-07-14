@@ -80,7 +80,11 @@ class Battle(Scene):
 class Battle01(Battle):
     def define_enemies(self):
         return [
-            Enemy(Vector2D(-69, -69), target=self.player, screen_size=self.screen_size),
+            Enemy(
+                position=Vector2D(-9, -9),
+                target=self.player,
+                screen_size=self.screen_size,
+            ),
         ]
 
     def exit_scene(self):
@@ -89,10 +93,15 @@ class Battle01(Battle):
 
 class Battle02(Battle):
     def define_enemies(self):
+        size = 25
         return [
-            Enemy(Vector2D(-69, -69), target=self.player, screen_size=self.screen_size),
             Enemy(
-                self.screen_size + Vector2D(69, 69),
+                position=Vector2D(-size, -size),
+                target=self.player,
+                screen_size=self.screen_size,
+            ),
+            Enemy(
+                position=self.screen_size + Vector2D(size, size),
                 target=self.player,
                 screen_size=self.screen_size,
             ),

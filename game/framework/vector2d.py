@@ -22,7 +22,7 @@ class Vector2D:
         return Vector2D(self.__x % other.__x, self.__y % other.__y)
 
     def __truediv__(self, num: float) -> "Vector2D":
-        return Vector2D(self.__x * num, self.__y * num)
+        return Vector2D(self.__x / num, self.__y / num)
 
     def __iter__(self):
         return iter([self.__x, self.__y])
@@ -36,7 +36,7 @@ class Vector2D:
 
     @property
     def length(self) -> float:
-        return (self.__x * self.__x + self.__y * self.__y) ** 0.5
+        return self.dot(self) ** 0.5
 
     def limit(self, limit: float) -> "Vector2D":
         length = self.length
@@ -50,3 +50,9 @@ class Vector2D:
             return Vector2D(length, 0)
         ratio = length / self.length
         return self * ratio
+
+    def dot(self, other: "Vector2D") -> float:
+        return self.__x * other.__x + self.__y * other.__y
+
+    def project_on(self, other: "Vector2D") -> "Vector2D":
+        return other * self.dot(other) / other.dot(other)

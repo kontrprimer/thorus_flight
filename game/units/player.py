@@ -9,13 +9,13 @@ from ..controls import Controls
 
 
 class Player(Character):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
         self.enemies: list[Character] = []
         self.weapons: list[Weapon] = [Weapon(self.pos)]
 
     def accelerate(self, direction: Vector2D):
-        self.speed += direction * 0.04
+        self.speed += direction * 0.04 / self.mass
 
     def draw_character(self, screen):
         draw_image(
