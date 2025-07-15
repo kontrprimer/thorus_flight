@@ -6,12 +6,16 @@ class Unit:
         self,
         position: Vector2D,
         screen_size: Vector2D,
+        direction: float = 0,
         mass: float = 1,
         size: float = 10,
         aerodynamics: float = 1,
     ):
         self.pos = position
         self.speed = Vector2D(0.0, 0.0)
+        self.direction = direction
+        self.turn_speed: float = 0
+        self.turn_acceleration: float = 1
         self.screen_size = screen_size
 
         self.size = size

@@ -37,5 +37,5 @@ class Enemy(Character):
             image_path="data/ship_1_a.png",
             pos=self.pos,
             scale_k=self.size / 128 * 1.3,
-            rotation_deg=self.speed.angle,
+            rotation_deg=self.speed.angle + 90,
         )
