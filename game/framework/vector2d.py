@@ -44,8 +44,7 @@ class Vector2D:
     def from_complex(complex_num: complex):
         return Vector2D(complex_num.real, complex_num.imag)
 
-    @property
-    def angle(self, degrees=True) -> float:
+    def angle(self, degrees=False) -> float:
         angle = cmath.phase(self.__val)
         if degrees:
             angle = angle / cmath.pi * 180

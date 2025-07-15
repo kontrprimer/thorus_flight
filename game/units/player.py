@@ -23,7 +23,8 @@ class Player(Character):
             image_path="data/ship_2_a.png",  # Replace with your SVG file path
             pos=self.pos,
             scale_k=self.size / 128 * 1.3,
-            rotation_deg=self.speed.angle + 90,  # Rotation angle in degrees
+            rotation_deg=self.speed.angle(degrees=True)
+            + 90,  # Rotation angle in degrees
         )
 
     def draw(self, screen):
