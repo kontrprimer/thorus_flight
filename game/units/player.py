@@ -15,14 +15,14 @@ class Player(Character):
         self.weapons: list[Weapon] = [Weapon(self.pos)]
 
     def accelerate(self, direction: Vector2D):
-        self.speed += direction * 0.04 / self.mass
+        self.speed += direction * 0.1 / self.mass
 
     def draw_character(self, screen):
         draw_image(
             screen,
             image_path="data/ship_2_a.png",  # Replace with your SVG file path
             pos=self.pos,
-            scale_k=0.3,
+            scale_k=self.size / 128 * 1.3,
             rotation_deg=self.speed.angle,  # Rotation angle in degrees
         )
 

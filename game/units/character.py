@@ -24,7 +24,12 @@ class Character(Unit):
             trail.update(keys)
         self.__trails = [trail for trail in self.__trails if trail.exists]
         self.__trails.append(
-            UnitTrail(self.pos, self.screen_size, size=12, decay_speed=0.2)
+            UnitTrail(
+                pos=self.pos,
+                screen_size=self.screen_size,
+                decay_speed=0.2,
+                size=self.size,
+            )
         )
 
     def take_damage(self, damage: float):

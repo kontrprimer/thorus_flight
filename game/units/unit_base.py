@@ -8,6 +8,7 @@ class Unit:
         screen_size: Vector2D,
         mass: float = 1,
         size: float = 10,
+        aerodynamics: float = 1,
     ):
         self.pos = position
         self.speed = Vector2D(0.0, 0.0)
@@ -18,6 +19,7 @@ class Unit:
         self.space_size = screen_size + self.screen_margin_size * 2
 
         self.mass = mass
+        self.aerodynamics = aerodynamics
 
     def update(self, keys):
         self.pos = (

@@ -35,7 +35,7 @@ class Battle(Scene):
         super().__init__(player, screen_size)
         self.enemies = self.define_enemies()
         self.player.enemies = self.enemies
-        self.air_friction = 0.001
+        self.air_friction = 0.01
 
     def define_enemies(self) -> list[Enemy]:
         raise NotImplementedError
@@ -65,7 +65,10 @@ class Battle(Scene):
         self.accelerate_player(keys)
         for enemy in self.enemies:
             enemy.accelerate()
-            enemy.speed = enemy.speed * (1 - self.air_friction)
+            self.slow_down_unit(enemy)
+
+    def slow_down_unit(self, unit):
+        unit.speed = unit.speed * (1 - self.air_friction / unit.aerodynamics)
 
     def accelerate_player(self, keys):
         acceleration = Vector2D(0, 0)
@@ -74,16 +77,18 @@ class Battle(Scene):
                 acceleration += step
         acceleration = acceleration.limit(1)
         self.player.accelerate(acceleration)
-        self.player.speed = self.player.speed * (1 - self.air_friction)
+        self.slow_down_unit(self.player)
 
 
 class Battle01(Battle):
     def define_enemies(self):
+        size = 25
         return [
             Enemy(
-                position=Vector2D(-9, -9),
+                position=Vector2D(-size, -size),
                 target=self.player,
                 screen_size=self.screen_size,
+                size=size,
             ),
         ]
 
@@ -99,11 +104,13 @@ class Battle02(Battle):
                 position=Vector2D(-size, -size),
                 target=self.player,
                 screen_size=self.screen_size,
+                size=size,
             ),
             Enemy(
                 position=self.screen_size + Vector2D(size, size),
                 target=self.player,
                 screen_size=self.screen_size,
+                size=size,
             ),
         ]
 

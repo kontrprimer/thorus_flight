@@ -21,7 +21,7 @@ class Enemy(Character):
             acceleration = speed_correction
         else:
             acceleration = pos_delta + speed_correction
-        self.speed = self.speed + acceleration.set_length(0.04) / self.mass
+        self.speed = self.speed + acceleration.set_length(0.05) / self.mass
 
     def try_attack(self):
         if time.time() - self.__last_attack_time < 1:
@@ -36,6 +36,6 @@ class Enemy(Character):
             screen,
             image_path="data/ship_1_a.png",
             pos=self.pos,
-            scale_k=0.3,
+            scale_k=self.size / 128 * 1.3,
             rotation_deg=self.speed.angle,
         )
