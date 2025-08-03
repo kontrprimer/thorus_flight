@@ -2,7 +2,6 @@ import time
 
 from game.framework.draw_image import draw_image
 from .character import Character
-from .unit_base import collide
 
 
 class Enemy(Character):
@@ -24,12 +23,7 @@ class Enemy(Character):
         self.speed = self.speed + acceleration.set_length(0.05) / self.mass
 
     def try_attack(self):
-        if time.time() - self.__last_attack_time < 1:
-            return
-        from_target_vector = self.pos - self.target.pos
-        if from_target_vector.length <= self.size + self.target.size:
-            collide(self, self.target)
-            self.__last_attack_time = time.time()
+        pass
 
     def draw_character(self, screen):
         draw_image(

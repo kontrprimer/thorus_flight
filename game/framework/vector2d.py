@@ -6,7 +6,7 @@ class Vector2D:
     def __init__(self, x, y):
         self.__val = complex(x, y)
 
-    def __eq__(self, other: "Vector2D"):
+    def __eq__(self, other: "Vector2D") -> bool:
         return self.__val == other.__val
 
     def __mul__(self, other: Union[float, complex, "Vector2D"]) -> "Vector2D":

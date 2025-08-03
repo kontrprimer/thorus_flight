@@ -1,8 +1,10 @@
 from .framework.vector2d import Vector2D
 from .units.player import Player
 from .units.enemies import Enemy
+from .units.unit_base import Unit
 from .controls import KEY_DIRECTIONS, Controls
 from .colours import BLACK, WHITE
+from .events.collisions import process_collisions
 
 import pygame
 
@@ -37,6 +39,10 @@ class Battle(Scene):
         self.player.enemies = self.enemies
         self.air_friction = 0.01
 
+    @property
+    def units(self) -> list[Unit]:
+        return [self.player] + self.enemies
+
     def define_enemies(self) -> list[Enemy]:
         raise NotImplementedError
 
@@ -44,6 +50,7 @@ class Battle(Scene):
         keys = pygame.key.get_pressed()
         self.accelerate_units(keys)
         self.update_units(keys)
+        process_collisions(self.units)
 
     def draw(self, screen):
         screen.fill(BLACK)
@@ -102,6 +109,20 @@ class Battle02(Battle):
         return [
             Enemy(
                 position=Vector2D(-size, -size),
+                target=self.player,
+                screen_size=self.screen_size,
+                size=size,
+            ),
+            Enemy(
+                position=Vector2D(0, 1) * self.screen_size.dot(Vector2D(0, 1))
+                + Vector2D(-size, size),
+                target=self.player,
+                screen_size=self.screen_size,
+                size=size,
+            ),
+            Enemy(
+                position=Vector2D(1, 0) * self.screen_size.dot(Vector2D(1, 0))
+                + Vector2D(size, -size),
                 target=self.player,
                 screen_size=self.screen_size,
                 size=size,
