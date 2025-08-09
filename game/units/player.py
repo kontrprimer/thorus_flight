@@ -73,7 +73,7 @@ class Player(Character):
 
 class Weapon:
     def __init__(self, pos: Vector2D):
-        self.damage: float = 5000
+        self.damage: float = 50
         self.range: float = 200
         self.push_power: float = 15
         self.pos: Vector2D = pos
